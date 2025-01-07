@@ -30,5 +30,6 @@ $user->user_role = $data['user_role'];
 $user->save();
 
 return redirect()->to('login');
+
    }
 }
