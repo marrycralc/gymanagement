@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (Schema::hasTable('trainers')) {
-        Schema::table('trainers', function (Blueprint $table) {  
-            $table->string('trainer_achievment', 150)->change();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('name')->nullable()->change();
         });
-    }
     }
 
     /**
@@ -23,10 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        if (Schema::hasTable('trainers')) {
-        Schema::table('trainers', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             //
         });
-    }
     }
 };

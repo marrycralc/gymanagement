@@ -1,16 +1,33 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use App\Http\Controllers\Auth\Controller;  // Ensure it extends the base controller
+use Illuminate\Support\Facades\Auth;
 use App\Models\Trainee;
+use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-class TraineeController
+use App\Models\User;
 
+class TraineeController extends Controller
 {
+    public function __construct()
+    {
+      
+        $this->middleware('auth');
+    }
+
+
     public function trainee()
     {
-       return view('trainee');
+
+    $trainers = Trainer::all();
+    $trainerss = Trainee::with('traineeralation')->find(1);
+  
+  
+    return view('trainee', compact('trainers', 'trainerss'));
+
+
     }
 
     public function traineedatarecored(Request $request)
@@ -31,8 +48,29 @@ class TraineeController
         $trainee->trainee_number = $request_data['trainee_mobile'];
         $trainee->created_at = Carbon::now('Asia/Kolkata');  
         $trainee->updated_at = Carbon::now('Asia/Kolkata');
+        $User = User::find(2);
+        $User->info_status = 'active';
+        $User->save();
         $trainee->save();
         
         return redirect()->back()->with('success', 'Trainee record saved successfully!');
     }
+
+    public function invitationtotrainer(Request $request)
+    {
+        $trainer_id = [1,2];
+        $trainee_id = 1; 
+    
+        $trainee = Trainee::find($trainee_id);
+        if (!$trainee) {
+            return response()->json(['error' => 'Trainee not found'], 404);
+        }
+    
+      
+        $trainee->traineeralation()->sync($trainer_id);
+      
+    
+        return response()->json(['success' => 'Invitations sent to trainers successfully!']);
+    }
+    
 }

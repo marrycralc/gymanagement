@@ -13,6 +13,7 @@ class Trainer extends Model
 
     public function trainerralation()
     {
-        return $this->belongsToMany(Trainee::class);
+        return $this->belongsToMany(Trainee::class, 'transaction_history', 'trainer_id', 'trainee_id');
     }
+    
 }

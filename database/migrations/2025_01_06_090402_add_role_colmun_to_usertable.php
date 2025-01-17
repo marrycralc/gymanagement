@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::hasTable('users')) {
         Schema::table('users', function (Blueprint $table) {
             $table->string('user_role')->nullable(false);
         });
+    }
     }
 
     /**
@@ -21,8 +23,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        if (Schema::hasTable('users')) {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('user_role');
         });
+
+    }
     }
 };

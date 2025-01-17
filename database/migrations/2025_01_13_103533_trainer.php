@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('trainers')) {
         Schema::create('trainers', function (Blueprint $table) {
             $table->id();
             $table->string('trainer_name');
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->float('trainer_achievment');
             $table->timestamps();
         });
+    }
         
         
     }

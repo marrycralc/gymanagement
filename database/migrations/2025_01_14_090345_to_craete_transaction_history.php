@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (!Schema::hasTable('transaction_history')) {
         Schema::create('transaction_history', function (Blueprint $table) {  
             $table->unsignedBigInteger('trainer_id');
             $table->unsignedBigInteger('trainee_id');
@@ -20,12 +21,14 @@ return new class extends Migration
             $table->foreign('trainee_id')->references('id')->on('trainee')->onDelete('cascade');
         });
     }
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
+        if (Schema::hasTable('transaction_history')) {
         Schema::table('transaction_history', function (Blueprint $table) {
             // Dropping foreign key constraints
             $table->dropForeign(['trainer_id']);
@@ -34,5 +37,6 @@ return new class extends Migration
             // Dropping the columns
             $table->dropColumn(['trainer_id', 'trainee_id']);
         });
+    }
     }
 };

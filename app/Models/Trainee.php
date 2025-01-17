@@ -12,7 +12,8 @@ class Trainee extends Model
 
     public function traineeralation()
     {
-        return $this->belongsToMany(Trainer::class);
+        return $this->belongsToMany(Trainer::class, 'transaction_history', 'trainee_id', 'trainer_id');
     }
+    
 
 }

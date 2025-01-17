@@ -1,16 +1,19 @@
 <?php
-
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Auth\Controller;  // Ensure it extends the base controller
+use Illuminate\Support\Facades\Auth;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-class TrainerController
+use App\Models\User;
+class TrainerController extends Controller
 {
+
     public function trainer()
     {
-    //   dd(Carbon::now('Asia/Kolkata')); 
-        return view('trainer');
+        $traineee = Trainer::with('trainerralation')->find(1);
+        return view('trainer', compact('traineee'));
     }
 
     public function trainerdatarecored(Request $request)
@@ -32,11 +35,13 @@ class TrainerController
         $trainer->created_at = Carbon::now('Asia/Kolkata');  
         $trainer->updated_at = Carbon::now('Asia/Kolkata');
         $trainer->save();
-    
+        $User = User::find(1);
+        $User->info_status = 'active';
+        $User->save();
         return redirect()->back()->with('success', 'Trainer record saved successfully!');
     }
-    
 }
+
 
       
 

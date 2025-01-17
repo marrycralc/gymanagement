@@ -1,6 +1,24 @@
-@extends('dashlayout')
+@extends('layout')
 @section('content') 
 <!-- Bootstrap Modal for Trainer Form -->
+<div> 
+  <div class="col-6 p-5">
+  
+<ul class="list-group">
+<h4>My Trainee List</h4>
+@foreach ($traineee->trainerralation as $trainer)
+       
+            <li class="list-group-item d-flex justify-content-between align-items-center">{{ $trainer->trainee_name }}<span class="badge badge-primary badge-pill text-primary
+
+">1 day ago</span></li>
+            
+     
+
+    @endforeach
+</ul>
+</div>  
+      </div>
+        @if (auth()->user()->info_status === 'inactive')
 <div class="modal fade" id="trainerModal" tabindex="-1" aria-labelledby="trainerModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -9,6 +27,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+ 
         <!-- Trainer Form -->
         <form method="post">
             @csrf
@@ -50,4 +69,5 @@
     myModal.show();
   });
 </script>
+@endif
 @endsection

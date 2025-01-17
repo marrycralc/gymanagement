@@ -1,6 +1,66 @@
-@extends('dashlayout')
+@extends('layout')
 @section('content') 
+<div class="container mt-5">
+  <div class="row ">
+    <div class="col-md-12 ">
+      <h1 class="text-center">Welcome Trainee</h1>
+     
+ 
+    </div>
+<div class="row ">
+   
+    <div class="col-md-8   ">
+        <h2>Invitation Requirements</h2>
+        <div class="card">
+            <div class="card-body">
+                <form method="post" action="{{ route('sendInvitation') }}">
+               
+                <div >
+        <h2>List of Trainers</h2>
+        <ul class="list-group d-flex flex-colmun gap-2">
+            @foreach($trainers as $trainer)
+            <div class="form-check">
+  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+  <label class="form-check-label" for="flexCheckDefault">
+  {{ $trainer->trainer_name }}
+  </label>
+</div>
+              
+            @endforeach
+        </ul>
+ 
+                    @csrf
+                    <div class="pt-5 pb-3">
+                        <label for="requirement" class="form-label">Requirement</label>
+                        <textarea class="form-control" id="requirement" name="requirement" rows="3" placeholder="Enter requirements"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary pt-2">Send Invitation</button>
+                </form>
+            </div>
+
+        </div>
+       
+        </div>
+    </div>
+    <div class="col-4">
+         <h3>My trainers</h3> 
+         <div class="card">
+            <div class="card-body">
+            <ul class="list-group">
+            @foreach ($trainerss->traineeralation as $trainer)
+            <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1"><a href="{{ route('payment', ['id' => $trainer->id]) }}">{{ $trainer->trainer_name }}</a></h5>
+      <small>3 days ago</small>
+    </div> 
+        @endforeach
+</div>
+</div>
+</div>
+</div>
+  </div>
+
 <!-- Bootstrap Modal for Trainer Form -->
+@if (auth()->user()->info_status === 'inactive')
 <div class="modal fade" id="trainerModal" tabindex="-1" aria-labelledby="trainerModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -10,7 +70,7 @@
       </div>
       <div class="modal-body">
         <!-- Trainer Form -->
-        <form method="post">
+        <form method="post"  action="{{ route('registrainer') }}">
             @csrf
            @if($errors->any())
        @foreach ($errors->all() as $error)
@@ -50,4 +110,6 @@
     myModal.show();
   });
 </script>
+@endif
+
 @endsection

@@ -1,15 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
 class LoginController
 {
-    
+   
     function welcomelogin()
     {
+
+        
         return view('login');
 
     }
@@ -22,6 +25,7 @@ class LoginController
         ]);
       
         $credentials = $request->only('email', 'password');
+        
         if (Auth::attempt($credentials)) {
             switch  (Auth::user()->user_role) {
                 case 'admin':
@@ -30,8 +34,8 @@ class LoginController
                 case 'trainer':
                     return redirect()->to('trainer');
                     break;
-                case 'Trainee':
-                    return redirect()->to('Trainee');
+                case 'trainee':
+                    return redirect()->to('trainee');
                     break;
                 default:
                     return redirect()->to('login');
@@ -44,4 +48,5 @@ class LoginController
 
     }
 }
+
 }
