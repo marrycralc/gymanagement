@@ -167,7 +167,9 @@
   </div>
   <script src="https://js.stripe.com/v3/"></script>
 
-  <form id="payment-form">
+  <form id="subscription-form">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <div id="card-element">
         <!-- Stripe Elements will insert the card input here -->
     </div>
@@ -175,38 +177,86 @@
     <div id="error-message"></div>
 </form>
 
-<script>document.addEventListener("DOMContentLoaded", function () {
-    const stripe = Stripe('pk_test_51Q9lu6SHpq4xQfXnbjukSfBrEARqEk9ORGsEi1II3vTwtyQ4yNZHTIOvDuTg6ly7e2wB1C1sS72Wwm5UF4joj4hx00xiyIUcf2'); // Replace with your Stripe publishable key
-    const elements = stripe.elements();
+<script>
+ const stripe = Stripe("pk_test_51Q9lu6SHpq4xQfXnbjukSfBrEARqEk9ORGsEi1II3vTwtyQ4yNZHTIOvDuTg6ly7e2wB1C1sS72Wwm5UF4joj4hx00xiyIUcf2"); // Replace with your Stripe publishable key
 
-    // Create an instance of the card Element
-    const card = elements.create('card');
-    card.mount('#card-element');
+// Initialize Stripe Elements
+const elements = stripe.elements();
+const cardElement = elements.create("card");
+cardElement.mount("#card-element");
 
-    // Handle form submission
-    const form = document.getElementById('payment-form');
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
+// Handle form submission
+document.getElementById("subscription-form").addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-        const { error, paymentIntent } = await stripe.confirmCardPayment(
-            'pi_3QjahQSHpq4xQfXn0m9Nh6yV_secret_SyKLqksISxQRhG9dPv2VJVCE5', // Replace with the clientSecret you received from your backend
-            {
-                payment_method: {
-                    card: card,
-                    billing_details: {
-                        name: 'Customer Name', // Replace with dynamic customer name
-                    },
-                },
-            }
-        );
+    // Static data for the customer and payment details
+    const customerName = 'sid';
+    const customerEmail = 'sid@gmail.com';
+    const customerAddress = {
+        line1: 'manmipura',
+        city: 'kotla',
+        state: 'hp',
+        postal_code: 16055,
+        country: 'IN',
+    };
 
-        if (error) {
-            document.getElementById('error-message').textContent = error.message;
-        } else {
-            alert('Payment successful!');
-        }
+    const billingDetails = {
+        name: customerName,
+        email: customerEmail,
+    };
+
+    // Create a PaymentMethod with static details
+    const { paymentMethod, error } = await stripe.createPaymentMethod({
+        type: "card",
+        card: cardElement,
+        billing_details: billingDetails,
     });
+
+    if (error) {
+        console.error(error.message);
+        document.getElementById("error-message").textContent = error.message;
+    } else {
+        // Send the static payment method ID and other details to the backend
+        const subscriptionData = {
+            customer_name: customerName,
+            customer_email: customerEmail,
+            customer_address: customerAddress,
+            payment_method_id: paymentMethod.id,
+        };
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        // Send the subscription data to the backend
+        const response = await fetch("/checkout_process", {
+            method: "POST",
+            headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfToken,  // Include CSRF token
+    },
+            body: JSON.stringify(subscriptionData),
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+        // Check if the PaymentIntent requires additional authentication
+        if (data.requires_action) {
+            const result = await stripe.confirmCardPayment(data.clientSecret);
+
+            if (result.error) {
+                // Show error in payment process
+                document.getElementById("error-message").textContent = result.error.message;
+            } else {
+                // Payment was successful
+                alert("Subscription created successfully!");
+            }
+        } else if (data.subscription) {
+            alert("Subscription created successfully!");
+        } else {
+            document.getElementById("error-message").textContent = "Payment failed. Please try again.";
+        }
+    }
 });
+
+
 </script>
 
 
