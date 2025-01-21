@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-use App\Http\Controllers\Auth\Controller;  // Ensure it extends the base controller
+use App\Http\Controllers\Auth\Controller; 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Trainee;
 use App\Models\Trainer;

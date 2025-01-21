@@ -40,54 +40,81 @@
             </div>
         </div>
         <!-- Pricing Table starts -->
-        <div class="row">
-            <div class="col-md-4">
-                <div class="price-card ">
-                    <h2>Basic</h2>
-                    <p>Access to gym facilities</p>
-                    <p class="price"><span>29</span>/ Month</p>
-                    <ul class="pricing-offers">
-                        <li>Access to gym equipment</li>
-                        <li>Locker room access</li>
-                        <li>1 Personal Training Session</li>
-                        <li>Group Classes</li>
-                        <li>Free Wi-Fi</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary btn-mid">Join Now</a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="price-card featured">
-                    <h2>Standard</h2>
-                    <p>Most popular choice</p>
-                    <p class="price"><span>49</span>/ Month</p>
-                    <ul class="pricing-offers">
-                        <li>Access to gym equipment</li>
-                        <li>Locker room access</li>
-                        <li>5 Personal Training Sessions</li>
-                        <li>Group Classes</li>
-                        <li>Free Wi-Fi</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary btn-mid">Join Now</a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="price-card ">
-                    <h2>Premium</h2>
-                    <p>For the dedicated</p>
-                    <p class="price"><span>69</span>/ Month</p>
-                    <ul class="pricing-offers">
-                        <li>Access to gym equipment</li>
-                        <li>Locker room access</li>
-                        <li>Unlimited Personal Training</li>
-                        <li>Group Classes</li>
-                        <li>Free Wi-Fi</li>
-                        <li>Sauna and Spa Access</li>
-                    </ul>
-                    <a href="#" class="btn btn-primary btn-mid">Join Now</a>
-                </div>
+   
+ 
+    @csrf
+    <input type="hidden" name="trainer_id" value="{{ $trainerdetail->id }}">
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="price-card">
+                <h2>Basic</h2>
+                <p>Access to gym facilities</p>
+                <p class="price"><span>29</span>/ Month</p>
+                <ul class="pricing-offers">
+                    <li>Access to gym equipment</li>
+                    <li>Locker room access</li>
+                    <li>1 Personal Training Session</li>
+                    <li>Group Classes</li>
+                    <li>Free Wi-Fi</li>
+                </ul>
+                <!-- Separate form for Basic membership -->
+                <form action="{{ route('checkout.route') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="trainer_id" value="{{ $trainerdetail->id }}">
+                    <input type="hidden" name="membership_type" value="basic">
+                    <input type="submit" class="btn btn-primary btn-mid" name="firstmember" value="Join Now">
+                </form>
             </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="price-card featured">
+                <h2>Standard</h2>
+                <p>Most popular choice</p>
+                <p class="price"><span>49</span>/ Month</p>
+                <ul class="pricing-offers">
+                    <li>Access to gym equipment</li>
+                    <li>Locker room access</li>
+                    <li>5 Personal Training Sessions</li>
+                    <li>Group Classes</li>
+                    <li>Free Wi-Fi</li>
+                </ul>
+                <!-- Separate form for Standard membership -->
+                <form action="{{ route('checkout.route') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="trainer_id" value="{{ $trainerdetail->id }}">
+                    <input type="hidden" name="membership_type" value="standard">
+                    <input type="submit" class="btn btn-primary btn-mid" name="secondmember" value="Join Now">
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="price-card">
+                <h2>Premium</h2>
+                <p>For the dedicated</p>
+                <p class="price"><span>69</span>/ Month</p>
+                <ul class="pricing-offers">
+                    <li>Access to gym equipment</li>
+                    <li>Locker room access</li>
+                    <li>Unlimited Personal Training</li>
+                    <li>Group Classes</li>
+                    <li>Free Wi-Fi</li>
+                    <li>Sauna and Spa Access</li>
+                </ul>
+                <!-- Separate form for Premium membership -->
+                <form action="{{ route('checkout.route') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="trainer_id" value="{{ $trainerdetail->id }}">
+                    <input type="hidden" name="membership_type" value="premium">
+                    <input type="submit" class="btn btn-primary btn-mid" name="thirdmember" value="Join Now">
+                </form>
+            </div>
+        </div>
+    </div>
+
+
     </div>
 </section>
 

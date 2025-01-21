@@ -5,15 +5,24 @@ use App\Http\Controllers\Auth\TrainerController;
 use App\Http\Controllers\Auth\TraineeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\PayementController;
+use App\Http\Controllers\Auth\checkoutController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome')->name('home');
 });
-Route::get('/payment/{id}',[PayementController::class, 'viewtrainerdetail'])->name('payment');
+
 Route::get('/admin', function () {
     return view('admin');
 });
+Route::get('/payment/{id}',[PayementController::class, 'viewtrainerdetail'])->name('payment');
+Route::post('/checkout', [PayementController::class, 'dataforcheck'])->name('checkout.route');
+Route::get('/checkout', function(request $request){
+    // ddd($request);
+    return view('checkout');
+ });
+ Route::post('/checkout_process', [checkoutController::class, 'checkout_process'])->name('checkoutp');
+
 Route::get('/trainer', [TrainerController::class, 'trainer']);
 Route::post('/trainer', [TrainerController::class, 'trainerdatarecored']);
 
