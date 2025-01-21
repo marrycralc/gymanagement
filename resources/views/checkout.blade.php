@@ -167,95 +167,65 @@
   </div>
   <script src="https://js.stripe.com/v3/"></script>
 
-  <form id="subscription-form">
+  <form id="payment-form">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <div id="card-element">
-        <!-- Stripe Elements will insert the card input here -->
-    </div>
-    <button id="submit">Pay</button>
-    <div id="error-message"></div>
+ 
+  <div id="payment-element">
+    <!-- Elements will create form elements here -->
+  </div>
+  <button id="submit">Subscribe</button>
+  <div id="error-message">
+    <!-- Display error message to your customers here -->
+  </div>
 </form>
 
 <script>
  const stripe = Stripe("pk_test_51Q9lu6SHpq4xQfXnbjukSfBrEARqEk9ORGsEi1II3vTwtyQ4yNZHTIOvDuTg6ly7e2wB1C1sS72Wwm5UF4joj4hx00xiyIUcf2"); // Replace with your Stripe publishable key
 
-// Initialize Stripe Elements
-const elements = stripe.elements();
-const cardElement = elements.create("card");
-cardElement.mount("#card-element");
+ const options = {
+  clientSecret: 'pi_3Qjf9kSHpq4xQfXn0loCMksv_secret_msDkGaYdMX1jmFvBLeIDP1fOG',
+  // Fully customizable with appearance API.
+  appearance: {/*...*/},
+  
+};
 
-// Handle form submission
-document.getElementById("subscription-form").addEventListener("submit", async (event) => {
-    event.preventDefault();
+// Set up Stripe.js and Elements to use in checkout form, passing the client secret obtained in step 5
+const elements = stripe.elements(options);
 
-    // Static data for the customer and payment details
-    const customerName = 'sid';
-    const customerEmail = 'sid@gmail.com';
-    const customerAddress = {
-        line1: 'manmipura',
-        city: 'kotla',
-        state: 'hp',
-        postal_code: 16055,
-        country: 'IN',
-    };
+const paymentElementOptions = {
+  layout: "tabs",
+};
 
-    const billingDetails = {
-        name: customerName,
-        email: customerEmail,
-    };
+// Create and mount the Payment Element
+const paymentElement = elements.create('payment', paymentElementOptions);
+paymentElement.mount('#payment-element');
 
-    // Create a PaymentMethod with static details
-    const { paymentMethod, error } = await stripe.createPaymentMethod({
-        type: "card",
-        card: cardElement,
-        billing_details: billingDetails,
-    });
+const form = document.getElementById('payment-form');
 
-    if (error) {
-        console.error(error.message);
-        document.getElementById("error-message").textContent = error.message;
-    } else {
-        // Send the static payment method ID and other details to the backend
-        const subscriptionData = {
-            customer_name: customerName,
-            customer_email: customerEmail,
-            customer_address: customerAddress,
-            payment_method_id: paymentMethod.id,
-        };
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        // Send the subscription data to the backend
-        const response = await fetch("/checkout_process", {
-            method: "POST",
-            headers: {
-        "Content-Type": "application/json",
-        "X-CSRF-TOKEN": csrfToken,  // Include CSRF token
-    },
-            body: JSON.stringify(subscriptionData),
-        });
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-        const data = await response.json();
-        console.log(data);
-
-        // Check if the PaymentIntent requires additional authentication
-        if (data.requires_action) {
-            const result = await stripe.confirmCardPayment(data.clientSecret);
-
-            if (result.error) {
-                // Show error in payment process
-                document.getElementById("error-message").textContent = result.error.message;
-            } else {
-                // Payment was successful
-                alert("Subscription created successfully!");
-            }
-        } else if (data.subscription) {
-            alert("Subscription created successfully!");
-        } else {
-            document.getElementById("error-message").textContent = "Payment failed. Please try again.";
-        }
+  const {error} = await stripe.confirmPayment({
+    //`Elements` instance that was used to create the Payment Element
+    elements,
+    confirmParams: {
+      return_url: "https://example.com/order/123/complete",
     }
-});
+  });
 
+  if (error) {
+    // This point will only be reached if there is an immediate error when
+    // confirming the payment. Show error to your customer (for example, payment
+    // details incomplete)
+    const messageContainer = document.querySelector('#error-message');
+    messageContainer.textContent = error.message;
+  } else {
+    // Your customer will be redirected to your `return_url`. For some payment
+    // methods like iDEAL, your customer will be redirected to an intermediate
+    // site first to authorize the payment, then redirected to the `return_url`.
+  }
+});
 
 </script>
 

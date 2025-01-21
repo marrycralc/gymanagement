@@ -18,69 +18,55 @@ class CheckoutController
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
     
         try {
-            $customerName = $request->input('customer_name', 'Default Customer');
-            $customerEmail = $request->input('customer_email');
-            $paymentMethodId = $request->input('payment_method_id'); // Payment Method from Stripe.js
-            $customerAddress = $request->input('customer_address', [
-                'line1' => '123 Default Street',
-                'line2' => '',
-                'city' => 'Default City',
-                'state' => 'Default State',
-                'postal_code' => '000000',
-                'country' => 'IN',
-            ]);
-    
-            // Step 2: Check if the customer exists or create a new customer
-            $customer = $stripe->customers->create([
-                'name' => $customerName,
-                'email' => $customerEmail,
-                'address' => $customerAddress,
-            ]);
-    
-            // Step 3: Attach the payment method to the customer
-            $stripe->paymentMethods->attach(
-                $paymentMethodId,
-                ['customer' => $customer->id]
-            );
-    
-            // Step 4: Set the default payment method for the customer
-            $stripe->customers->update(
-                $customer->id,
-                ['invoice_settings' => ['default_payment_method' => $paymentMethodId]]
-            );
-    
-            // Step 5: Create a price for the subscription plan
-            $price = $stripe->prices->create([
-                'currency' => 'inr',
-                'unit_amount' => 1000, // ₹10.00
-                'recurring' => ['interval' => 'day '],
-                'product_data' => ['name' => 'Gold Plan'],
-            ]);
-    
-            // Step 6: Create the subscription
-            $subscription = $stripe->subscriptions->create([
-                'customer' => $customer->id,
-                'items' => [
-                    [
-                        'price' => $price->id, // Price ID from the created price
-                    ],
-                ],
-                'expand' => ['latest_invoice.payment_intent'], // To retrieve payment status
-            ]);
-    
-            // Check if payment intent requires additional authentication
-            if ($subscription->latest_invoice->payment_intent->status === 'requires_action') {
-                return response()->json([
-                    'requires_action' => true,
-                    'clientSecret' => $subscription->latest_invoice->payment_intent->client_secret, // Include client secret
-                ]);
-            }
-    
-            // Return the subscription and payment intent details
-            return response()->json([
-                'subscription' => $subscription,
-                'clientSecret' => $subscription->latest_invoice->payment_intent->client_secret, // Include client secret
-            ]);
+           
+$cuatomeroid = $stripe->customers->create([
+    'email' => 'sid@gmail.com',
+    'name' => 'sidharth',
+    'shipping' => [
+      'address' => [
+        'city' => 'Brothers',
+        'country' => 'US',
+        'line1' => '27 Fredrick Ave',
+        'postal_code' => '97712',
+        'state' => 'CA',
+      ],
+      'name' => 'sidharth',
+    ],
+    'address' => [
+      'city' => 'Brothers',
+      'country' => 'US',
+      'line1' => '27 Fredrick Ave',
+      'postal_code' => '97712',
+      'state' => 'CA',
+    ],
+  ]);
+ $priceid = $stripe->prices->create([
+    'currency' => 'inr',
+    'unit_amount' => 1000,
+    'recurring' => ['interval' => 'month'],
+    'product_data' => ['name' => 'Gold Plan'],
+  ]);
+
+  $customer_id = $cuatomeroid->id;
+  $price_id = $priceid->id;
+
+  // Create the subscription with the customer ID, price ID, and necessary options.
+  $subscription = $stripe->subscriptions->create([
+      'customer' => $customer_id,
+      'items' => [[
+          'price' => $price_id,
+      ]],
+      'payment_behavior' => 'default_incomplete',
+      'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
+      'expand' => ['latest_invoice.payment_intent'],
+  ]);
+
+  // Return the subscription ID and client secret as a JSON response.
+  header('Content-Type: application/json');
+  echo json_encode([
+      'subscriptionId' => $subscription->id,
+      'clientSecret' => $subscription->latest_invoice->payment_intent->client_secret,
+  ]);
     
         } catch (\Exception $e) {
             // Return any errors encountered during the process
