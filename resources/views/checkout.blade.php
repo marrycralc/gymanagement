@@ -189,7 +189,7 @@
         event.preventDefault();
 
         const { error, paymentIntent } = await stripe.confirmCardPayment(
-            'pi_3QjahQSHpq4xQfXn0m9Nh6yV_secret_SyKLqksISxQRhG9dPv2VJVCE5', // Replace with the clientSecret you received from your backend
+            'pi_3QjdjFSHpq4xQfXn1UXxB3s3_secret_DzIbmvEqk1oDIXA7RGnKM07jn', // Replace with the clientSecret you received from your backend
             {
                 payment_method: {
                     card: card,
