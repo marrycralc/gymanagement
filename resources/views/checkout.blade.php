@@ -188,16 +188,20 @@
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const { error, paymentIntent } = await stripe.confirmCardPayment(
+        const { error, paymentIntent } = await stripe.confirmKlarnaPayment(
             'pi_3QjdjFSHpq4xQfXn1UXxB3s3_secret_DzIbmvEqk1oDIXA7RGnKM07jn', // Replace with the clientSecret you received from your backend
             {
-                payment_method: {
-                    card: card,
-                    billing_details: {
-                        name: 'Customer Name', // Replace with dynamic customer name
-                    },
-                },
-            }
+              payment_method: {
+      billing_details: {
+        email: 'jenny.rosen@example.com',
+        address: {
+          country: 'DE',
+        },
+      },
+    },
+    return_url: 'https://example.com/checkout/complete',
+  },
+            
         );
 
         if (error) {
@@ -207,8 +211,36 @@
         }
     });
 });
-</script>
 
+</script>
+<?php 
+// Parent class
+class Animal {
+  public $name;
+
+  // public function __construct($name) {
+  //     echo $this->name = $name;
+  // }
+
+  public function speak() {
+      echo $this->name . " makes a sound.";
+  }
+}
+
+// Child class inherits from Animal
+class Dog extends Animal {
+  public function speak() {
+      echo $this->name . " barks.";
+  }
+}
+
+// Creating an object of Dog class
+$dog = new Animal("Rex");
+$dog->speak();
+echo "</br>";  // Output: Rex barks.
+// $nn = new Animal("cheeta");
+
+?>
 
   <footer class="my-5 pt-5 text-muted text-center text-small">
     <p class="mb-1">&copy; 2017-2019 Company Name</p>

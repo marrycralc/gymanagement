@@ -30,6 +30,7 @@ class CheckoutController
     
             // Create a PaymentIntent with customer details
             $paymentIntent = $stripe->paymentIntents->create([
+                'payment_method_types' => ['klarna'],
                 'amount' => 500, // Amount in smallest currency unit (e.g., 500 paise = ₹5)
                 'currency' => 'inr',
                 'description' => 'Export transaction for gym services',
