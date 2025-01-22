@@ -184,7 +184,7 @@
  const stripe = Stripe("pk_test_51Q9lu6SHpq4xQfXnbjukSfBrEARqEk9ORGsEi1II3vTwtyQ4yNZHTIOvDuTg6ly7e2wB1C1sS72Wwm5UF4joj4hx00xiyIUcf2"); // Replace with your Stripe publishable key
 
  const options = {
-  clientSecret: 'pi_3Qjf9kSHpq4xQfXn0loCMksv_secret_msDkGaYdMX1jmFvBLeIDP1fOG',
+  clientSecret: 'pi_3Qk0QvSHpq4xQfXn1pTLd4S4_secret_ut2rxHMv2C8M5r9WhaKHv9448',
   // Fully customizable with appearance API.
   appearance: {/*...*/},
   

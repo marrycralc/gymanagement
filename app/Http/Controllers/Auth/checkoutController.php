@@ -18,31 +18,56 @@ class CheckoutController
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
     
         try {
-            $customerName = $request->input('customer_name', 'Default Customer');
-            $customerAddress = $request->input('customer_address', [
-                'line1' => '123 Default Street',
-                'line2' => '',
-                'city' => 'Default City',
-                'state' => 'Default State',
-                'postal_code' => '000000',
-                'country' => 'IN',
-            ]);
+           
+$cuatomeroid = $stripe->customers->create([
+    'email' => 'sid@gmail.com',
+    'name' => 'sidharth',
+    'shipping' => [
+      'address' => [
+        'city' => 'Brothers',
+        'country' => 'US',
+        'line1' => '27 Fredrick Ave',
+        'postal_code' => '97712',
+        'state' => 'CA',
+      ],
+      'name' => 'sidharth',
+    ],
+    'address' => [
+      'city' => 'Brothers',
+      'country' => 'US',
+      'line1' => '27 Fredrick Ave',
+      'postal_code' => '97712',
+      'state' => 'CA',
+    ],
+  ]);
+ $priceid = $stripe->prices->create([
+    'currency' => 'inr',
+    'unit_amount' => 1000,
+    'recurring' => ['interval' => 'month'],
+    'product_data' => ['name' => 'Gold Plan'],
+  ]);
+
+  $customer_id = $cuatomeroid->id;
+  $price_id = $priceid->id;
+
+  // Create the subscription with the customer ID, price ID, and necessary options.
+  $subscription = $stripe->subscriptions->create([
+      'customer' => $customer_id,
+      'items' => [[
+          'price' => $price_id,
+      ]],
+      'payment_behavior' => 'default_incomplete',
+      'payment_settings' => ['save_default_payment_method' => 'on_subscription'],
+      'expand' => ['latest_invoice.payment_intent'],
+  ]);
+
+  // Return the subscription ID and client secret as a JSON response.
+  header('Content-Type: application/json');
+  echo json_encode([
+      'subscriptionId' => $subscription->id,
+      'clientSecret' => $subscription->latest_invoice->payment_intent->client_secret,
+  ]);
     
-            // Create a PaymentIntent with customer details
-            $paymentIntent = $stripe->paymentIntents->create([
-                'payment_method_types' => ['klarna'],   
-                'amount' => 500, // Amount in smallest currency unit (e.g., 500 paise = ₹5)
-                'currency' => 'inr',
-                'description' => 'Export transaction for gym services',
-                'automatic_payment_methods' => ['enabled' => true],
-                'shipping' => [
-                    'name' => $customerName,
-                    'address' => $customerAddress,
-                ],
-            ]);
-            return response()->json([
-                'clientSecret' => $paymentIntent->client_secret,
-            ]);
         } catch (\Exception $e) {
             Log::error('Stripe error: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
