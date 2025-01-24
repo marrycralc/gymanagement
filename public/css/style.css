@@ -28,13 +28,18 @@ a.nav-link {
   font-size: 2rem;
 }
 
-#sec1 {
-  background-image: url(https://thumbs.dreamstime.com/b/d-render-abstract-gradient-colorful-fluids-drops-soaps-bubbles-blobs-floating-air-isolated-white-background-188652305.jpg);
-  width: 100%;
-  height: 100%;
+#sechome {
+  /* background: url('public/images/gymbanner.png'); */
+  width: 70%;
+  /* height: 800px; */
+  padding: 45px;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  height: 700px;
+  align-items: center;
+  margin: 0 auto;
+  display: flex;
 }
 
 .modal-contain {
@@ -145,7 +150,7 @@ body {
 #pricing {
   width: 100%;
   text-align: center;
-  margin-top: 10%;
+
 }
 
 #pricing .row {
@@ -402,4 +407,160 @@ ul li {
   /* display: flex; */
   width: max-content !important;
   margin: 0 auto !important;
+}
+
+
+.healthinsurenece img {
+  width: 100%;
+  height: 100%;
+  padding: 134px;
+  padding-top: 0;
+}
+
+   /* *,*::after, *::before {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+          background-color: rgb(241 245 249);
+        } */
+
+        /* main {
+          width: 100vw;
+          height: 100vh;
+          flex-direction: row;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+        } */
+
+        em {
+            color: #8a2be2;
+        }
+       
+        /* Controls */
+        .carousel-control-next {
+            margin: 0 3em;
+        }
+         .contactbtn
+         {  
+            background-color: #8a2be2;
+            color: #fff;
+         }
+        i.fa-arrow-right,
+       i.fa-arrow-left {
+          background: none;
+          border: 2px solid #8a2be2;
+          color: #8a2be2;
+          padding: 10px;
+          border-radius: 100%;
+          transition: background .6s ease;
+        }
+
+        i.fa-arrow-right:hover,
+        i.fa-arrow-left:hover {
+            background: #8a2be2;
+            color: white;
+        }
+
+        /* Indicators */
+        .carousel-indicators {
+            justify-content: flex-start;
+           transform: translate(-40px, 50px);
+        }
+
+        .carousel-indicators [data-bs-target] {
+            width: 10px;
+            height: 10px;
+            border-radius: 100%;
+            border: 2px solid #8a2be2;
+        }
+
+        .carousel-indicators .active {
+            opacity: 1;
+            background-color:  #8a2be2;
+        }
+
+        /* Control buttons */
+        .control-btn {
+            position: absolute;
+            top: 8px;
+            right: 10em;
+        }
+        .carousel-control-next, 
+        .carousel-control-prev {
+            top: 1em;
+            left: 3em;
+        }
+
+        .testimonial-text {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            column-gap: 20px; 
+        }
+
+        .wow {
+            position: relative;
+            grid-column: span 2;
+        }
+
+        .carousel-landmark {
+            grid-column: span 3;
+        }
+
+        @media screen and (max-width: 576px) {
+            .testimonial-text {
+                margin-top: 50px;
+            row-gap: 50px;
+            
+        }
+            .wow {
+            grid-column: span 5;
+        }
+
+        .carousel-landmark {  
+            grid-column: span 5;
+        }
+        }
+        .banner img {
+            width: 100%;
+            height: 100%;
+        }
+        .rightimage img {
+          width: 100%;
+          height: auto;
+          margin-left: 83px;
+      }
+      .mytrainers img {
+        width: 50%;
+        height: auto;
+        margin-left: 83px;
+        margin-top: 51px;
+    }
+    ul.list-group {
+      gap: 19px !important;
+      padding: 40px;
+    
+      /* text-decoration: none; */
+  }
+  ul.list-group a{
+   text-decoration: none !important;
+   color:#000000;
+}
+.form-check label.form-check-label {
+  font-size: 20px;
+}
+.form-check {
+  line-height: 21px !important;
+}
+.invite_heading
+{
+
+    background: #f3f3f3;
+    border-radius: 8px;
+    padding: 10px;
+
 }

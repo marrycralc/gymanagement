@@ -6,15 +6,21 @@ use App\Http\Controllers\Auth\TraineeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\PayementController;
 use App\Http\Controllers\Auth\checkoutController;
+use App\Http\Controllers\Auth\WebhookController;
+use App\Http\Controllers\Auth\GetupdateController;
 
 
 Route::get('/', function () {
-    return view('welcome')->name('home');
+    return view('welcome');
 });
 
 Route::get('/admin', function () {
     return view('admin');
 });
+Route::get('/pricing', function () {
+    return view('pricing');
+});
+Route::post('/mailsend', [GetupdateController::class, 'mailupdate'])->name('mailupdate');
 Route::get('/payment/{id}',[PayementController::class, 'viewtrainerdetail'])->name('payment');
 Route::post('/checkout', [PayementController::class, 'dataforcheck'])->name('checkout.route');
 Route::get('/checkout', function(request $request){
@@ -22,6 +28,7 @@ Route::get('/checkout', function(request $request){
     return view('checkout');
  });
  Route::post('/checkout_process', [checkoutController::class, 'checkout_process'])->name('checkoutp');
+ Route::post('/webhook/payment_statusc', [WebhookController::class, 'checkstatus'])->name('checkstatus');
 
 Route::get('/trainer', [TrainerController::class, 'trainer']);
 Route::post('/trainer', [TrainerController::class, 'trainerdatarecored']);

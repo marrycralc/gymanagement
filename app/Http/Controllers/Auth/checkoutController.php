@@ -1,12 +1,7 @@
 <?php
-
-
-
-
 namespace App\Http\Controllers\Auth;
+
 use Stripe\Stripe;
-use Stripe\Charge;
-use Stripe\Exception\ApiErrorException;
 use Illuminate\Http\Request;
 
 class CheckoutController
@@ -16,7 +11,7 @@ class CheckoutController
         require_once base_path('vendor/autoload.php');
     
         $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET_KEY'));
-    
+
         try {
             $customerName = $request->input('customer_name', 'Default Customer');
             $customerAddress = $request->input('customer_address', [
@@ -28,25 +23,30 @@ class CheckoutController
                 'country' => 'IN',
             ]);
     
-            // Create a PaymentIntent with customer details
+            // Create a PaymentIntent
             $paymentIntent = $stripe->paymentIntents->create([
-                'payment_method_types' => ['klarna'],
-                'amount' => 500, // Amount in smallest currency unit (e.g., 500 paise = ₹5)
+                'amount' => 500, // Amount in smallest currency unit
                 'currency' => 'inr',
-                'description' => 'Export transaction for gym services',
+                'description' => 'Gym Service Payment',
                 'automatic_payment_methods' => ['enabled' => true],
                 'shipping' => [
                     'name' => $customerName,
                     'address' => $customerAddress,
                 ],
             ]);
+            $stripe->webhookEndpoints->create([
+                'enabled_events' => ['charge.succeeded', 'charge.failed'],
+                'url' => 'http://gymmanagement.local/webhook/payment_statusc',
+              ]);
+              
+           $webhookdata =  $stripe->webhookEndpoints->retrieve('we_1Qk2B0SHpq4xQfXnR7xK4aWj', []);
             return response()->json([
+                'webhookresposnse' => $webhookdata,
+                'status' =>  $stripe->paymentIntents->retrieve($paymentIntent->id, []),
                 'clientSecret' => $paymentIntent->client_secret,
             ]);
         } catch (\Exception $e) {
-            Log::error('Stripe error: ' . $e->getMessage());
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
 }

@@ -16,15 +16,19 @@
                     <p><strong>Achievements:</strong> {{ $trainerdetail->trainer_achievment }}</p>
                 </div>
             </div>
+            <div class="card-body">
+                    <h2 style="
+    text-align: right;
+" class="card-text text-right mt-5 p-4">Profile Picture >> </h2>
+                   
+                </div>
         </div>
         
         <!-- Image Section (Right Side) -->
         <div class="col-md-4">
-            <div class="card">
-                <img src="{{ asset('images/New Project.png') }}" class="card-img-top" alt="Trainer Image">
-                <div class="card-body">
-                    <p class="card-text text-center">Profile Picture</p>
-                </div>
+            <div class="card bg-white">
+                <img width="100%" height="500px" src="{{ asset('images/angel.jpg') }}" class="card-img-top" alt="Trainer Image">
+            
             </div>
         </div>
     </div>

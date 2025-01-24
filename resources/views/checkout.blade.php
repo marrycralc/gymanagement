@@ -166,8 +166,12 @@
     </div>
   </div>
   <script src="https://js.stripe.com/v3/"></script>
-
+<form action="{{route('checkstatus')}}" method="post">
+  @csrf
+  <input type="submit" id="cardholder-name" placeholder="Cardholder Name">
+</form>
   <form id="payment-form">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
     <div id="card-element">
         <!-- Stripe Elements will insert the card input here -->
     </div>
@@ -187,27 +191,41 @@
     const form = document.getElementById('payment-form');
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        const { error, paymentIntent } = await stripe.confirmKlarnaPayment(
-            'pi_3QjdjFSHpq4xQfXn1UXxB3s3_secret_DzIbmvEqk1oDIXA7RGnKM07jn', // Replace with the clientSecret you received from your backend
-            {
-              payment_method: {
-      billing_details: {
-        email: 'jenny.rosen@example.com',
-        address: {
-          country: 'DE',
-        },
-      },
+const response = await fetch("/checkout_process", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": csrfToken,
     },
-    return_url: 'https://example.com/checkout/complete',
-  },
-            
-        );
+    // body: JSON.stringify(subscriptionData),
+});
+
+const data = await response.json();
+console.log(data);
+        // Fetch clientSecret from your backend
+        const clientSecret = '3'; // Replace with actual clientSecret
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(data.clientSecret, {
+            payment_method: {
+                card: card, // Pass the card element
+                billing_details: {
+                    email: 'jenny.rosen@example.com', // Optional: Replace with user input
+                    address: {
+                        country: 'DE', // Optional: Replace with user input
+                    },
+                },
+            },
+        });
 
         if (error) {
+            // Display error message
             document.getElementById('error-message').textContent = error.message;
-        } else {
+        } else if (paymentIntent) {
+            // Payment succeeded
             alert('Payment successful!');
+            console.log(`PaymentIntent status: ${paymentIntent.status}`);
         }
     });
 });

@@ -1,23 +1,30 @@
 @extends('layout')
 @section('content') 
-<div class="container mt-5">
-  <div class="row ">
-    <div class="col-md-12 ">
+<div class="col-md-12 pb-4 ">
       <h1 class="text-center">Welcome Trainee</h1>
      
  
     </div>
+  <!-- <div class="banner">
+  <img src="{{ asset('images/newgymbanner.jpg') }}" alt="">
+
+  </div> -->
+<div class="container mt-5">
+
+  
+ 
 <div class="row ">
    
     <div class="col-md-8   ">
-        <h2>Invitation Requirements</h2>
+        <h2 class="invite_heading">Invitation Requirements</h2>
         <div class="card">
             <div class="card-body">
                 <form method="post" action="{{ route('sendInvitation') }}">
                
                 <div >
-        <h2>List of Trainers</h2>
+       
         <ul class="list-group d-flex flex-colmun gap-2">
+        <h2 >List of Trainers</h2>
             @foreach($trainers as $trainer)
             <div class="form-check">
   <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
@@ -27,14 +34,20 @@
 </div>
               
             @endforeach
-        </ul>
- 
-                    @csrf
-                    <div class="pt-5 pb-3">
+            <div class="pt-5 pb-3">
                         <label for="requirement" class="form-label">Requirement</label>
                         <textarea class="form-control" id="requirement" name="requirement" rows="3" placeholder="Enter requirements"></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary pt-2">Send Invitation</button>
+                    <button type="submit" style="
+    width: 150px;
+    background-color: #8a2be2;
+    color: white;
+" class="btn  pt-2">Send Invitation</button>
+        </ul>
+ 
+                    @csrf
+                   
+                    
                 </form>
             </div>
 
@@ -42,21 +55,34 @@
        
         </div>
     </div>
-    <div class="col-4">
-         <h3>My trainers</h3> 
+   
+<div class="rightimage col-4">
+  <img src="{{asset('images/trainers.jpeg')}}" alt=""></div>
+</div>
+<div class="row">
+  
+<div class="col-8">
+         <h3 class="invite_heading mt-5" >My trainers</h3> 
          <div class="card">
-            <div class="card-body">
+            <div class="card-body" style="
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* gap: 22px; */
+">
             <ul class="list-group">
             @foreach ($trainerss->traineeralation as $trainer)
             <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1"><a href="{{ route('payment', ['id' => $trainer->id]) }}">{{ $trainer->trainer_name }}</a></h5>
-      <small>3 days ago</small>
+      <small class="text-primary
+">3 days ago</small>
     </div> 
         @endforeach
+        </div>    
 </div>
+<!-- <div class="col-12 mytrainers"><img src="{{asset('images/mytrainers.jpeg')}}" alt=""></div> -->
 </div>
-</div>
-</div>
+
   </div>
 
 <!-- Bootstrap Modal for Trainer Form -->
