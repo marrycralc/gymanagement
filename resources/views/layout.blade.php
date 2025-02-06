@@ -25,8 +25,16 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
               <div class="navbar-nav">
                 <a class="nav-link cl-bv" style="color: blueviolet; font-weight: 800;" href="{{url('/')}}">Home</a>
-                <a class="nav-link" href="{{route('tranee')}}">Trainers</a>
+              
+                @if (auth()->check() && auth()->user()->user_role === 'trainee')
+    <a class="nav-link" href="{{ route('trainee') }}">My Trainers</a>
+@elseif (auth()->check() && auth()->user()->user_role === 'trainer')
+    <a class="nav-link" href="{{ route('trainer') }}">My Trainees</a>
+@endif
+
+
                 <a class="nav-link" href="{{url('pricing')}}">Pricing</a>
+                <a class="nav-link" href="{{url('getopai')}}">Help ?</a>
 
               </div>
               <div class="navbar-btn">
@@ -48,11 +56,17 @@
     </main>
 
     <footer style="background-color: #f3f3f3; text-align: center; padding: 5% 5%;">
-      <form action="{{ route('mailupdate') }}" method="POST">
+      <form id="emailgetupudate" action="{{ route('mailupdate') }}" method="POST">
         @csrf
     <h1>Get the Latest Updates From Us</h1>
+ 
     <p style="color: gray;">Join our mailing list by entering your email for exclusive information.</p>
     <input placeholder="example@1234.com" type="email" name="email"><br><br>
+    @if(session()->has('success'))
+    <div class="alert alert-success emialalert">
+        {{ session()->get('success') }}
+    </div>
+@endif
     <button class="btn btn-dark btn-lg">Get Updates</button>
     </form>
   </footer>

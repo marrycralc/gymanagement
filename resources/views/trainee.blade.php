@@ -11,7 +11,7 @@
   </div> -->
 <div class="container mt-5">
 
-  
+ 
  
 <div class="row ">
    
@@ -24,16 +24,24 @@
                 <div >
        
         <ul class="list-group d-flex flex-colmun gap-2">
-        <h2 >List of Trainers</h2>
-            @foreach($trainers as $trainer)
+        <h2 >Trainer you want replace</h2>
+        @if(session()->has('success'))
+<div class="alert alert-success">
+{{ session()->get('success') }}
+</div>
+@endif
+        @if($trainerssss) 
+        @php $count = 0; @endphp
+            @foreach($trainerssss as $trainers)
             <div class="form-check">
-  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-  <label class="form-check-label" for="flexCheckDefault">
-  {{ $trainer->trainer_name }}
+  <input class="form-check-input" type="checkbox" value="{{$trainers->id}}" name="tarainername[]" id="flexCheckDefault{{$count}}">
+  <label class="form-check-label" for="flexCheckDefault {{$count}}">
+  {{ $trainers->trainer_name }}
   </label>
 </div>
-              
+@php $count++; @endphp
             @endforeach
+            @endif
             <div class="pt-5 pb-3">
                         <label for="requirement" class="form-label">Requirement</label>
                         <textarea class="form-control" id="requirement" name="requirement" rows="3" placeholder="Enter requirements"></textarea>
@@ -70,14 +78,22 @@
     flex-direction: column;
     /* gap: 22px; */
 ">
-            <ul class="list-group">
-            @foreach ($trainerss->traineeralation as $trainer)
-            <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1"><a href="{{ route('payment', ['id' => $trainer->id]) }}">{{ $trainer->trainer_name }}</a></h5>
-      <small class="text-primary
-">3 days ago</small>
-    </div> 
-        @endforeach
+
+<ul class="list-group">
+@if($trainee && $trainee->trainers)  <!-- Check if the trainee and trainers are not null -->
+    @foreach($trainee->trainers as $trainer)
+   
+   <li><b><a href="{{ route('payment', ['id' => $trainer->id]) }}">1. {{$trainer->trainer_name}} </a></b></li>
+      
+    @endforeach
+@else
+    <p>No trainers found for this trainee.</p>
+@endif
+
+
+</ul>
+
+
         </div>    
 </div>
 <!-- <div class="col-12 mytrainers"><img src="{{asset('images/mytrainers.jpeg')}}" alt=""></div> -->

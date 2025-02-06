@@ -26,4 +26,7 @@
     </div>
 </div>
 </div>
+<script async src="https://cse.google.com/cse.js?cx=5008acc4ca29d4403">
+</script>
+<div class="gcse-search"></div>
 @endsection

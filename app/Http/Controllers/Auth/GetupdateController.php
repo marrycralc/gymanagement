@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Mail;
 class GetupdateController extends Controller
 {
     public function mailupdate(Request $request)
+    
     {
-        $mailData = 'hello';
+        $mailData = $request->email;
     try {
     
         Mail::to($request->email)->send(new GetUpdate($mailData));
     
-        // return back()->with('success', 'Email sent successfully!');
+        return redirect('http://gymmanagement.local#emailgetupudate')->with('success', 'Email sent successfully!');
     }
     catch (\Exception $e) {
         \Log::error('Mail sending failed: ' . $e->getMessage());

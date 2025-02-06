@@ -564,3 +564,83 @@ ul li {
     padding: 10px;
 
 }
+
+#emailgetupudate .emialalert {
+  width: max-content  !important;
+  margin: 0 auto !important;
+}
+
+#emailgetupudate .emialalert h2 {
+  font-size: 2.5rem;
+  padding: 20px;
+}
+
+#emailgetupudate .emialalert .alert {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+  background-color: #8a2be2;
+  color: white;
+}
+
+#emailgetupudate .emialalert .alert h2 {
+  font-size: 2rem;
+}
+
+#emailgetupudate .emialalert .alert p {
+  font-size: 1.5rem;
+}
+
+#emailgetupudate .emialalert .alert .btn-dark {
+  background-color: blueviolet;
+  border: transparent;
+  padding: 10px 40px;
+}
+
+#emailgetupudate .emialalert .alert .btn-dark:hover {
+  background-color: #8a2be2;
+  color: white;
+}
+
+#emailgetupudate .emialalert .alert .btn-dark:focus {
+  background-color: #8a2be2;
+  color: white;
+}
+
+#emailgetupudate .emialalert .alert .btn-dark:active {
+  background-color: #8a2be2;
+  color: white;
+}
+
+#emailgetupudate .emialalert .alert .btn-dark:visited {
+  background-color: #8a2be2;
+  color: white;
+}
+
+#emailgetupudate .emialalert .alert .btn-dark:disabled {
+  background-color: #8a2be2;
+  color: white;
+}
+
+#emailgetupudate .emialalert .alert .btn-dark:disabled:hover {
+  background-color: #8a2be2;
+  color: white;
+}
+#emailgetupudate .emialalert .alert .btn-dark:disabled:focus {
+  background-color: #8a2be2;
+  color: white;
+}
+#emailgetupudate .emialalert .alert .btn-dark:disabled:active {
+  background-color: #8a2be2;
+  color: white;
+}
+#emailgetupudate .emialalert .alert .btn-dark:disabled:visited {
+  background-color: #8a2be2;
+  color: white;
+}
+
+#emailgetupudate button.btn.btn-dark.btn-lg {
+  display: inline;
+  margin-top: 15px;
+}

@@ -10,9 +10,9 @@ class PayementController
 {
    public function viewtrainerdetail($id){
 
+    
        $trainerdetail  = Trainer::find($id);
-      
-
+  
        return view('payment', ['id' => $id] ,compact('trainerdetail'));
    }
 

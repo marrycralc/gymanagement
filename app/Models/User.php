@@ -46,4 +46,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function traineewithuser()
+    {
+        return $this->hasOne(Trainee::class, 'user_id');
+    }
+    public function trainerWithUser()
+    {
+        return $this->hasOne(Trainer::class, 'user_id'); // Use the correct foreign key column name if it's different
+    }
 }

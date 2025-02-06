@@ -6,15 +6,18 @@
   
 <ul class="list-group">
 <h4>My Trainee List</h4>
-@foreach ($traineee->trainerralation as $trainer)
-       
-            <li class="list-group-item d-flex justify-content-between align-items-center">{{ $trainer->trainee_name }}<span class="badge badge-primary badge-pill text-primary
 
-">1 day ago</span></li>
-            
-     
-
+@if($traineee && $traineee->trainees->isNotEmpty())
+    @foreach ($traineee->trainees as $trainer)
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ $trainer->trainee_name }}
+            <span class="badge badge-primary badge-pill">1 day ago</span>
+        </li>
     @endforeach
+@else
+    <p>No related trainees found for this trainer.</p>
+@endif
+
 </ul>
 </div>  
       </div>

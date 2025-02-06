@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\Trainer;     
+use App\Models\Trainee;
 
 class LoginController
 {
@@ -13,6 +15,12 @@ class LoginController
     {
 
         
+        if (Auth::check()) {
+            Auth::logout();
+            return view('login')->with('message', 'You have been logged out successfully.');
+        }
+    
+        // If not logged in, just return the login view
         return view('login');
 
     }
